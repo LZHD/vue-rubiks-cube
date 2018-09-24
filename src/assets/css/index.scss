@@ -1,15 +1,16 @@
 html, body {
   height: 100%;
-  margin: 0px;
-  //overflow: hidden;
+  margin: 0;
+  overflow: hidden;
 }
 
 body {
   background-color: #777;
   color: white;
-  text-shadow: 0px 1px 1px black;
+  text-shadow: 0 1px 1px black;
   text-align: center;
   font-family: sans-serif;
+  perspective: 460px;
 }
 
 #app {
@@ -18,7 +19,7 @@ body {
 
 h1 {
   text-align: center;
-  margin-top: 0px;
+  margin-top: 0;
   padding-top: 1em;
 }
 

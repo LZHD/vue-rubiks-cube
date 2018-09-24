@@ -33,6 +33,8 @@ export default {
         return letter.toUpperCase()
       })
     },
-    _node: document.createElement('div')
+    _node: function () {
+      return document.createElement('div')
+    }
   }
 }

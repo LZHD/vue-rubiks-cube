@@ -1,46 +1,34 @@
 <template>
-  <div class="cube" :style="style">
-    <face v-if="{{type }}"></face>
+  <div class="cube" :style="styleObj">
+    <face :_type="type" :color="color"/>
   </div>
 </template>
 
 <script>
-  import CSS3 from '../utils/CSS3'
   import Face from '../utils/global'
-  import face from '@components/face'
+  import face from '@/components/face'
   export default {
     name: "cube",
-    mixins: [CSS3],
-    comments: {
+    components: {
       face
     },
     data () {
       return {
-        _rotation: null,
-        style: {
+        styleObj: {
           width: Face.SIZE + 'px',
           height: Face.SIZE + 'px',
           position: 'absolute',
+          transformStyle: 'preserve-3d'
         },
         _faces: {},
         _tmpFaces: {}
       }
     },
     props: {
-      _position: string
-    },
-    created() {
-      this.set(this.$refs, "transform-style", "preserve-3d")
-    },
-    methods: {
-      setFace (type, color) {
-        if (!(type in this._faces)) {
-          let face = '<face></face>';
-          this.$refs.appendChild(face);
-          this._faces[type] = face;
-        }
-        this._faces[type].setColor(color);
-      }
+      _rotation: String,
+      _position: String,
+      type: Number,
+      color: String
     }
   }
 </script>
