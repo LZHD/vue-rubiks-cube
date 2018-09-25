@@ -1,18 +1,19 @@
 <template>
   <div class="cube" :style="styleObj">
-    <face :_type="type" :color="color"/>
+    <face v-for="item in faces" :_type="item.type" :color="item.color"/>
   </div>
 </template>
 
 <script>
   import Face from '../utils/global'
   import face from '@/components/face'
+
   export default {
     name: "cube",
     components: {
       face
     },
-    data () {
+    data() {
       return {
         styleObj: {
           width: Face.SIZE + 'px',
@@ -27,8 +28,7 @@
     props: {
       _rotation: String,
       _position: String,
-      type: Number,
-      color: String
+      faces: Array
     }
   }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="face face" :style="styleObj"></div>
+  <div class="face" :class="extClass" :style="styleObj"></div>
 </template>
 
 <script>
@@ -17,7 +17,8 @@
           top: '0px',
           boxSizing: 'border-box',
           backgroundColor: this.color
-        }
+        },
+        extClass: 'face' + this._type
       }
     },
     props: {
