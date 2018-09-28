@@ -1,6 +1,6 @@
 <template>
   <div :style="styleObj">
-    <cube v-for="item in 27" :faces="size"/>
+    <cube v-for="item in cubes" :faces="size"/>
   </div>
 </template>
 
@@ -23,13 +23,15 @@
           width: '0px',
           height: '0px',
           transformStyle: 'preserve-3d'
-        }
+        },
+        cubes: 0
       }
     },
     created() {
       for (let z = 0; z < 3; z++) {
         for (let y = 0; y < 3; y++) {
           for (let x = 0; x < 3; x++) {
+            this.cubes = this.cubes + 1
             if (z === 0) {
               this.size.push({
                 type: Face.FRONT,
