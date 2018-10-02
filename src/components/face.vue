@@ -64,23 +64,7 @@
       }
     },
     methods: {
-      getCube() {
-        return this._cube;
-      },
-      getNode() {
-        return this.$refs;
-      },
-      getType() {
-        return this._type;
-      },
-      setColor(color) {
-        // this._color = color;
-        this.$set(this.$data, '_color', color);
-        this.$refs.style.backgroundColor = color;
-      },
-      getColor() {
-        return this._color;
-      }
+
     }
   }
 </script>

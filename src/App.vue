@@ -1,6 +1,6 @@
 <template>
   <div :style="styleObj">
-    <cube v-for="item in cubes" :faces="size"/>
+    <cube v-for="item in cubes" :faces="item"/>
   </div>
 </template>
 
@@ -15,7 +15,6 @@
     },
     data() {
       return {
-        size: [],
         styleObj: {
           position: 'absolute',
           left: '50%',
@@ -24,52 +23,53 @@
           height: '0px',
           transformStyle: 'preserve-3d'
         },
-        cubes: 0
+        cubes: []
       }
     },
     created() {
       for (let z = 0; z < 3; z++) {
         for (let y = 0; y < 3; y++) {
           for (let x = 0; x < 3; x++) {
-            this.cubes = this.cubes + 1
+            let faces = [];
             if (z === 0) {
-              this.size.push({
+              faces.push({
                 type: Face.FRONT,
                 color: 'red'
               });
             }
             if (z === 2) {
-              this.size.push({
+              faces.push({
                 type: Face.BACK,
                 color: 'orange'
               });
             }
 
             if (x === 0) {
-              this.size.push({
+              faces.push({
                 type: Face.LEFT,
                 color: 'blue'
               });
             }
             if (x === 2) {
-              this.size.push({
+              faces.push({
                 type: Face.RIGHT,
                 color: 'green'
               });
             }
 
             if (y === 0) {
-              this.size.push({
+              faces.push({
                 type: Face.TOP,
                 color: 'yellow'
               });
             }
             if (y === 2) {
-              this.size.push({
+              faces.push({
                 type: Face.BOTTOM,
                 color: 'white'
               });
             }
+            this.cubes.push(faces)
           }
         }
       }
