@@ -18,7 +18,7 @@ export default {
         boxSizing: 'border-box',
         backgroundColor: this.color
       },
-      extClass: 'face face' + this._type
+      extClass: 'face' + this._type
     }
   },
   props: {
@@ -41,11 +41,11 @@ export default {
         break
       case Face.TOP:
         this.$set(this.styleObj, 'transformOrigin', '50% 100%')
-        this.$set(this.styleObj, 'transform', 'translate3d(0px, -' + Face.SIZE + 'px, 0px) rotateY(90deg)')
+        this.$set(this.styleObj, 'transform', 'translate3d(0px, -' + Face.SIZE + 'px, 0px) rotateX(90deg)')
         break
       case Face.BOTTOM:
         this.$set(this.styleObj, 'transformOrigin', '50% 0%')
-        this.$set(this.styleObj, 'transform', 'translate3d(0px, ' + Face.SIZE + 'px, 0px) rotateY(-90deg)')
+        this.$set(this.styleObj, 'transform', 'translate3d(0px, ' + Face.SIZE + 'px, 0px) rotateX(-90deg)')
         break
       case Face.FRONT:
         break

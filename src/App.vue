@@ -17,11 +17,10 @@ export default {
   data () {
     return {
       size: 3,
-      _cubes: [],
       cubes: [],
-      _faces: [],
-      _faceNodes: [],
-      _drag: {
+      faces: [],
+      faceNodes: [],
+      drag: {
         ec: [],
         mouse: [],
         face: null
@@ -34,7 +33,7 @@ export default {
         height: 0,
         transformStyle: 'preserve-3d'
       },
-      _rotation: {
+      rotation: {
         x: '',
         y: '',
         z: '',
@@ -98,8 +97,47 @@ export default {
     update: function () {
       document.body.style.perspective = '460px'
       console.log(Quaternion.fromRotation([1, 0, 0], -35))
-      this._rotation = Quaternion.fromRotation([1, 0, 0], -35).multiply(Quaternion.fromRotation([0, 1, 0], 45))
-      this.$set(this.styleObj, 'transform', 'translateZ(' + (-Face.SIZE / 2 - Face.SIZE) + 'px) ' + this._rotation.toRotation() + ' translateZ(' + (Face.SIZE / 2) + 'px)')
+      this.rotation = Quaternion.fromRotation([1, 0, 0], -35).multiply(Quaternion.fromRotation([0, 1, 0], 45))
+      this.$set(this.styleObj, 'transform', 'translateZ(' + (-Face.SIZE / 2 - Face.SIZE) + 'px) ' + this.rotation.toRotation() + ' translateZ(' + (Face.SIZE / 2) + 'px)')
+      document.body.addEventListener('mousedown', this.dragStart);
+    },
+    eventToFace (e) {
+      let node;
+      if (document.elementFromPoint) {
+        const e = (e.touches ? e.touches[0] : e);
+        node = document.elementFromPoint(e.clientX, e.clientY);
+      } else {
+        node = e.target;
+      }
+      var index = this.faceNodes.indexOf(node);
+      if (index === -1) { return null; }
+      return this.faces[index];
+    },
+    dragStart (e) {
+      e.preventDefault();
+      e = (e.touches ? e.touches[0] : e);
+      this.drag.mouse = [e.clientX, e.clientY];
+      document.body.addEventListener('mousemove', this.dragMove);
+      document.body.addEventListener('mouseup', this.dragEnd);
+    },
+    dragMove (e) {
+      e = (e.touches ? e.touches[0] : e);
+      const mouse = [e.clientX, e.clientY];
+      const dx = mouse[0] - this.drag.mouse[0];
+      const dy = mouse[1] - this.drag.mouse[1];
+      const norm = Math.sqrt(dx * dx + dy * dy);
+      if (!norm) {
+        return;
+      }
+      const N = [-dy / norm, dx / norm];
+
+      this.drag.mouse = mouse;
+      this.rotation = Quaternion.fromRotation([N[0], N[1], 0], norm / 2).multiply(this.rotation);
+      this.$set(this.styleObj, 'transform', 'translateZ(' + (-Face.SIZE / 2 - Face.SIZE) + 'px) ' + this.rotation.toRotation() + ' translateZ(' + (Face.SIZE / 2) + 'px)')
+    },
+    dragEnd () {
+      document.body.removeEventListener('mousemove', this.dragMove);
+      document.body.removeEventListener('mouseup', this.dragEnd);
     }
   }
 }
