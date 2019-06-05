@@ -27,14 +27,10 @@ export default {
         height: Face.SIZE + 'px',
         position: 'absolute',
         transformStyle: 'preserve-3d'
-      },
-      _faces: {},
-      _tmpFaces: {}
+      }
     }
   },
   props: {
-    rotation: String,
-    position: Array,
     faces: Array,
     cube: Object
   },
@@ -48,7 +44,6 @@ export default {
     update () {
       let transform = ''
       transform += 'translate3d(' + (-Face.SIZE / 2) + 'px, ' + (-Face.SIZE / 2) + 'px, ' + (-Face.SIZE / 2) + 'px) '
-      console.log('变了')
       if (this.cube.rotation) {
         transform += this.cube.rotation + ' '
       }
@@ -68,7 +63,6 @@ export default {
     },
     rotate (type) {
       const [dir, layer] = [type[1], type[2]]
-      console.log(dir, layer)
       this.$emit(type[0], [dir, layer])
     }
   }

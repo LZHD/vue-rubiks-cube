@@ -5,8 +5,6 @@
       :key="index"
       :cube="cube"
       :faces="cube.faces"
-      :position="cube.position"
-      :rotation="cube.rotation"
       @rotateX="rotateX"
       @rotateY="rotateY"
       @rotateZ="rotateZ"
@@ -107,12 +105,12 @@ export default {
   methods: {
     update: function () {
       document.body.style.perspective = '460px'
-      console.log(Quaternion.fromRotation([1, 0, 0], -35))
       this.rotation = Quaternion.fromRotation([1, 0, 0], -35).multiply(Quaternion.fromRotation([0, 1, 0], 45))
       this.$set(this.styleObj, 'transform', 'translateZ(' + (-Face.SIZE / 2 - Face.SIZE) + 'px) ' + this.rotation.toRotation() + ' translateZ(' + (Face.SIZE / 2) + 'px)')
       document.body.addEventListener('mousedown', this.dragStart)
     },
     dragStart (e) {
+      console.log(e)
       e.preventDefault()
       if (e.target.tagName !== 'BODY') {
         return
@@ -142,7 +140,6 @@ export default {
       document.body.removeEventListener('mouseup', this.dragEnd)
     },
     rotateX ([dir, layer]) {
-      console.log('XXX')
       const cubes = []
       for (let i = 0; i < Math.pow(this.size, 2); i++) {
         cubes.push(layer + i * this.size)
@@ -150,7 +147,6 @@ export default {
       this.rotateCubes(cubes, [dir, 0, 0])
     },
     rotateY ([dir, layer]) {
-      console.log('YYY')
       const cubes = []
       for (let i = 0; i < this.size; i++) {
         for (let j = 0; j < this.size; j++) {
@@ -160,7 +156,6 @@ export default {
       this.rotateCubes(cubes, [0, -dir, 0])
     },
     rotateZ ([dir, layer]) {
-      console.log('ZZZ')
       const cubes = []
       const offset = layer * Math.pow(this.size, 2)
       for (let i = 0; i < Math.pow(this.size, 2); i++) {
@@ -175,17 +170,14 @@ export default {
         if (!rotation[i]) { continue }
         str = 'rotate' + suffixes[i] + '(' + (90 * rotation[i]) + 'deg)'
       }
-      const newCubes = this.cubes
-      newCubes.forEach((index) => {
+      this.cubes.forEach((cube, index) => {
         cubes.forEach(i => {
           if (index === i) {
-            console.log(newCubes[i])
-            newCubes[index] = Object.assign(newCubes[index], { rotation: str })
+            const obj = Object.assign({}, cube, { rotation: str })
+            this.$set(this.cubes, index, obj)
           }
         })
       })
-      // console.log(this.cubes)
-      this.cubes = []
     }
   }
 }
