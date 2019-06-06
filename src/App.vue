@@ -1,6 +1,6 @@
 <template>
   <div :style="styleObj">
-    <cube
+    <cube ref="cube"
       v-for="(cube, index) in cubes"
       :key="index"
       :cube="cube"
@@ -111,6 +111,7 @@ export default {
     },
     dragStart (e) {
       console.log(e)
+      console.log(this.getAllFace())
       e.preventDefault()
       if (e.target.tagName !== 'BODY') {
         return
@@ -178,6 +179,12 @@ export default {
           }
         })
       })
+    },
+    getAllCube () {
+      return this.$refs.cube
+    },
+    getAllFace () {
+      return this.getAllCube().map(cube => cube.$refs.face).filter(faces => Array.isArray(faces)).reduce((a, b) => [...a, ...b])
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="cube" :style="styleObj">
-    <face
+    <face ref="face"
       v-for="(item, index) in cube.faces"
       :key="index"
       :type="item.type"
