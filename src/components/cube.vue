@@ -6,13 +6,12 @@
       :type="item.type"
       :color="item.color"
       :cube="cube"
-      @rotate="rotate"
     ></face>
   </div>
 </template>
 
 <script>
-import Face from '@/utils/global'
+import {Face} from '@/utils/global'
 import face from '@/components/face'
 
 export default {
@@ -35,13 +34,13 @@ export default {
     cube: Object
   },
   created () {
-    this.update()
+    this.init()
   },
   beforeUpdate () {
-    this.update()
+    this.init()
   },
   methods: {
-    update () {
+    init () {
       let transform = ''
       transform += 'translate3d(' + (-Face.SIZE / 2) + 'px, ' + (-Face.SIZE / 2) + 'px, ' + (-Face.SIZE / 2) + 'px) '
       if (this.cube.rotation) {
@@ -60,10 +59,6 @@ export default {
       let val = this.cube.rotation ? 'transform 300ms' : ''
       this.$set(this.styleObj, 'transition', val)
       this.$set(this.styleObj, 'transform', transform)
-    },
-    rotate (type) {
-      const [dir, layer] = [type[1], type[2]]
-      this.$emit(type[0], [dir, layer])
     }
   }
 }
