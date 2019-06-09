@@ -36,12 +36,6 @@ export default {
         width: 0,
         height: 0,
         transformStyle: 'preserve-3d'
-      },
-      rotation: {
-        x: '',
-        y: '',
-        z: '',
-        w: ''
       }
     }
   },
@@ -250,9 +244,6 @@ export default {
         }
       }
     },
-    rotateChange (type) {
-      this.$emit('rotate', type)
-    },
     rotateX (dir, layer) {
       const cubes = []
       for (let i = 0; i < Math.pow(this.size, 2); i++) {
@@ -284,7 +275,6 @@ export default {
         if (!rotation[i]) { continue }
         str = 'rotate' + suffixes[i] + '(' + (90 * rotation[i]) + 'deg)'
       }
-      this.finalizeRotation(cubes, rotation)
       this.cubes.forEach((cube, index) => {
         cubes.forEach(i => {
           if (index === i) {
@@ -293,6 +283,9 @@ export default {
           }
         })
       })
+      setTimeout(() => {
+        this.finalizeRotation(cubes, rotation)
+      }, 5000)
     },
     finalizeRotation(cubes, rotation) {
       let direction = 0;
@@ -306,6 +299,7 @@ export default {
         direction *= -1;
       }
       const half = Math.floor(this.size / 2);
+      this.tmpFaces = []
       for (let i = 0; i < cubes.length; i++) {
         const x = i % this.size - half;
         const y = Math.floor(i / this.size) - half;
@@ -313,41 +307,49 @@ export default {
         const source = [y * direction + half, -x * direction + half];
         const sourceIndex = source[0] + this.size * source[1];
 
-        this.prepareColorChange(sourceIndex, rotation);
+        this.prepareColorChange(cubes[sourceIndex], rotation);
       }
 
       for (let i = 0; i < cubes.length; i++) {
-        this.commitColorChange(i);
+        this.commitColorChange(cubes[i]);
       }
     },
     prepareColorChange (sourceIndex, rotation) {
-      this.tmpFaces = []
+      // this.tmpFaces = []
       const sourceFaces = this.cubes[sourceIndex].faces
       sourceFaces.forEach(sourceFace => {
         const targetType = this.rotateType(sourceFace.type, rotation)
         this.tmpFaces.push({
+          index: sourceIndex,
           color: sourceFace.color,
           type: targetType
         })
       })
     },
     rotateType (type, rotation) {
-      for (let i=0;i<3;i++) {
-        if (!rotation[i]) { continue; }
+      for (let i = 0; i < 3; i++) {
+        if (!rotation[i]) {
+          continue;
+        }
         const faces = ROTATION[i];
         let index = faces.indexOf(type);
-        if (index === -1) { continue; }
+        if (index === -1) {
+          continue;
+        }
         index = (index + rotation[i] + faces.length) % faces.length;
         return faces[index];
       }
       return type;
     },
     commitColorChange (index) {
-      const cube = Object.assign({}, this.cubes[index], { faces: this.tmpFaces})
-      console.log()
-      this.$set(this.cubes, index, cube)
-      console.log(this.cubes)
-      this.tmpFaces = []
+      const faces = this.tmpFaces.filter(face =>  face.index === index).map(face => {
+        delete face.index
+        return face
+      })
+      if (faces.length > 0) {
+        const obj = Object.assign({}, this.cubes[index], { faces: faces, rotation: null})
+        this.$set(this.cubes, index, obj)
+      }
     },
     getAllCube () {
       return this.$refs.cube

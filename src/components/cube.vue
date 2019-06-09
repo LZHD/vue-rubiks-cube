@@ -35,9 +35,11 @@ export default {
   },
   created () {
     this.init()
+    console.log('更新了')
   },
   beforeUpdate () {
     this.init()
+    console.log('更新了')
   },
   methods: {
     init () {
