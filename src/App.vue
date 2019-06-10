@@ -351,10 +351,8 @@ export default {
         delete face.index
         return face
       })
-      if (faces.length > 0) {
-        const obj = Object.assign({}, this.cubes[index], { faces: faces, rotation: null })
-        this.$set(this.cubes, index, obj)
-      }
+      const obj = Object.assign({}, this.cubes[index], { faces: faces, rotation: null })
+      this.$set(this.cubes, index, obj)
     },
     getAllCube () {
       return this.$refs.cube

@@ -39,14 +39,22 @@ export default {
   beforeUpdate () {
     this.init()
   },
+  updated () {
+    console.log('111111111111')
+    this.init()
+  },
   watch: {
-    type () {
-      this.init()
+    type: {
+      immediate: true,
+      handler() {
+        console.log('222222222222sdafas')
+        this.init()
+      }
     }
   },
   methods: {
     init () {
-      console.log(this.type)
+      console.log(this.type, this.cube)
       switch (this.type) {
         case Face.LEFT:
           this.$set(this.styleObj, 'transformOrigin', '100% 50%')
