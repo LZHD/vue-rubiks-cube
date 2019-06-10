@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import {Face} from '@/utils/global'
+import { Face } from '@/utils/global'
 
 export default {
   name: 'face',
@@ -34,32 +34,43 @@ export default {
     }
   },
   created () {
-    switch (this.type) {
-      case Face.LEFT:
-        this.$set(this.styleObj, 'transformOrigin', '100% 50%')
-        this.$set(this.styleObj, 'transform', 'translate3d(-' + Face.SIZE + 'px, 0px, 0px) rotateY(-90deg)')
-        break
-      case Face.RIGHT:
-        this.$set(this.styleObj, 'transformOrigin', '0% 50%')
-        this.$set(this.styleObj, 'transform', 'translate3d(' + Face.SIZE + 'px, 0px, 0px) rotateY(90deg)')
-        break
-      case Face.TOP:
-        this.$set(this.styleObj, 'transformOrigin', '50% 100%')
-        this.$set(this.styleObj, 'transform', 'translate3d(0px, -' + Face.SIZE + 'px, 0px) rotateX(90deg)')
-        break
-      case Face.BOTTOM:
-        this.$set(this.styleObj, 'transformOrigin', '50% 0%')
-        this.$set(this.styleObj, 'transform', 'translate3d(0px, ' + Face.SIZE + 'px, 0px) rotateX(-90deg)')
-        break
-      case Face.FRONT:
-        break
-      case Face.BACK:
-        this.$set(this.styleObj, 'transform', 'translate3d(0px, 0px, -' + Face.SIZE + 'px) rotateY(180deg)')
-        break
+    this.init()
+  },
+  beforeUpdate () {
+    this.init()
+  },
+  watch: {
+    type () {
+      this.init()
     }
   },
   methods: {
-
+    init () {
+      console.log(this.type)
+      switch (this.type) {
+        case Face.LEFT:
+          this.$set(this.styleObj, 'transformOrigin', '100% 50%')
+          this.$set(this.styleObj, 'transform', 'translate3d(-' + Face.SIZE + 'px, 0px, 0px) rotateY(-90deg)')
+          break
+        case Face.RIGHT:
+          this.$set(this.styleObj, 'transformOrigin', '0% 50%')
+          this.$set(this.styleObj, 'transform', 'translate3d(' + Face.SIZE + 'px, 0px, 0px) rotateY(90deg)')
+          break
+        case Face.TOP:
+          this.$set(this.styleObj, 'transformOrigin', '50% 100%')
+          this.$set(this.styleObj, 'transform', 'translate3d(0px, -' + Face.SIZE + 'px, 0px) rotateX(90deg)')
+          break
+        case Face.BOTTOM:
+          this.$set(this.styleObj, 'transformOrigin', '50% 0%')
+          this.$set(this.styleObj, 'transform', 'translate3d(0px, ' + Face.SIZE + 'px, 0px) rotateX(-90deg)')
+          break
+        case Face.FRONT:
+          break
+        case Face.BACK:
+          this.$set(this.styleObj, 'transform', 'translate3d(0px, 0px, -' + Face.SIZE + 'px) rotateY(180deg)')
+          break
+      }
+    }
   }
 }
 </script>

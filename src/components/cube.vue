@@ -1,17 +1,17 @@
 <template>
   <div class="cube" :style="styleObj">
     <face ref="face"
-      v-for="(item, index) in cube.faces"
+      v-for="(face, index) in cube.faces"
       :key="index"
-      :type="item.type"
-      :color="item.color"
+      :type="face.type"
+      :color="face.color"
       :cube="cube"
     ></face>
   </div>
 </template>
 
 <script>
-import {Face} from '@/utils/global'
+import { Face } from '@/utils/global'
 import face from '@/components/face'
 
 export default {
@@ -30,16 +30,15 @@ export default {
     }
   },
   props: {
-    faces: Array,
     cube: Object
   },
   created () {
     this.init()
-    console.log('更新了')
   },
-  beforeUpdate () {
-    this.init()
-    console.log('更新了')
+  watch: {
+    cube () {
+      this.init()
+    }
   },
   methods: {
     init () {

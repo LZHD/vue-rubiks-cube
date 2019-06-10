@@ -4,14 +4,13 @@
       v-for="(cube, index) in cubes"
       :key="index"
       :cube="cube"
-      :faces="cube.faces"
     />
   </div>
 </template>
 
 <script>
 import cube from '@/components/cube'
-import {Face, ROTATION} from '@/utils/global'
+import { Face, ROTATION } from '@/utils/global'
 import Quaternion from '@/utils/quaternion'
 
 export default {
@@ -36,6 +35,12 @@ export default {
         width: 0,
         height: 0,
         transformStyle: 'preserve-3d'
+      },
+      rotation: {
+        x: '',
+        y: '',
+        z: '',
+        w: ''
       }
     }
   },
@@ -111,8 +116,8 @@ export default {
       document.body.addEventListener('mouseup', this.dragEnd)
     },
     dragMove (e) {
-      if (e.touches && e.touches.length > 1) { return; }
-      if (!!this.drag.face) {
+      if (e.touches && e.touches.length > 1) { return }
+      if (this.drag.face) {
         const moveToFace = this.getAllFace().filter(face => face.$el === e.target)[0]
         if (!moveToFace || moveToFace === this.drag.face) {
           return
@@ -287,40 +292,40 @@ export default {
         this.finalizeRotation(cubes, rotation)
       }, 5000)
     },
-    finalizeRotation(cubes, rotation) {
-      let direction = 0;
+    finalizeRotation (cubes, rotation) {
+      let direction = 0
       for (let i = 0; i < 3; i++) {
         if (rotation[i]) {
-          direction = rotation[i];
+          direction = rotation[i]
         }
       }
 
       if (rotation[0]) {
-        direction *= -1;
+        direction *= -1
       }
-      const half = Math.floor(this.size / 2);
+      const half = Math.floor(this.size / 2)
       this.tmpFaces = []
       for (let i = 0; i < cubes.length; i++) {
-        const x = i % this.size - half;
-        const y = Math.floor(i / this.size) - half;
+        const x = i % this.size - half
+        const y = Math.floor(i / this.size) - half
 
-        const source = [y * direction + half, -x * direction + half];
-        const sourceIndex = source[0] + this.size * source[1];
+        const source = [y * direction + half, -x * direction + half]
+        const sourceIndex = source[0] + this.size * source[1]
 
-        this.prepareColorChange(cubes[sourceIndex], rotation);
+        this.prepareColorChange(cubes[i], cubes[sourceIndex], rotation)
       }
 
       for (let i = 0; i < cubes.length; i++) {
-        this.commitColorChange(cubes[i]);
+        this.commitColorChange(cubes[i])
       }
     },
-    prepareColorChange (sourceIndex, rotation) {
+    prepareColorChange (i, index, rotation) {
       // this.tmpFaces = []
-      const sourceFaces = this.cubes[sourceIndex].faces
+      const sourceFaces = this.cubes[index].faces
       sourceFaces.forEach(sourceFace => {
         const targetType = this.rotateType(sourceFace.type, rotation)
         this.tmpFaces.push({
-          index: sourceIndex,
+          index: i,
           color: sourceFace.color,
           type: targetType
         })
@@ -329,25 +334,25 @@ export default {
     rotateType (type, rotation) {
       for (let i = 0; i < 3; i++) {
         if (!rotation[i]) {
-          continue;
+          continue
         }
-        const faces = ROTATION[i];
-        let index = faces.indexOf(type);
+        const faces = ROTATION[i]
+        let index = faces.indexOf(type)
         if (index === -1) {
-          continue;
+          continue
         }
-        index = (index + rotation[i] + faces.length) % faces.length;
-        return faces[index];
+        index = (index + rotation[i] + faces.length) % faces.length
+        return faces[index]
       }
-      return type;
+      return type
     },
     commitColorChange (index) {
-      const faces = this.tmpFaces.filter(face =>  face.index === index).map(face => {
+      const faces = this.tmpFaces.filter(face => face.index === index).map(face => {
         delete face.index
         return face
       })
       if (faces.length > 0) {
-        const obj = Object.assign({}, this.cubes[index], { faces: faces, rotation: null})
+        const obj = Object.assign({}, this.cubes[index], { faces: faces, rotation: null })
         this.$set(this.cubes, index, obj)
       }
     },

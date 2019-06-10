@@ -13,6 +13,6 @@ export const ROTATION = [
   [Face.TOP, Face.FRONT, Face.BOTTOM, Face.BACK].reverse(),
   [Face.LEFT, Face.BACK, Face.RIGHT, Face.FRONT].reverse(),
   [Face.LEFT, Face.BOTTOM, Face.RIGHT, Face.TOP].reverse()
-];
+]
 
-export default {Face, ROTATION}
+export default { Face, ROTATION }
