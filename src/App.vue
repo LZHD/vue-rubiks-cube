@@ -1,10 +1,11 @@
 <template>
   <div :style="styleObj">
-    <cube ref="cube"
+    <cube
+      ref="cube"
       v-for="(cube, index) in cubes"
       :key="index"
       :cube="cube"
-    />
+    ></cube>
   </div>
 </template>
 

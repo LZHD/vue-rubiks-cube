@@ -1,6 +1,7 @@
 <template>
   <div class="cube" :style="styleObj">
-    <face ref="face"
+    <face
+      ref="face"
       v-for="(face, index) in cube.faces"
       :key="index"
       :type="face.type"
@@ -33,6 +34,9 @@ export default {
     cube: Object
   },
   created () {
+    this.init()
+  },
+  updated () {
     this.init()
   },
   watch: {

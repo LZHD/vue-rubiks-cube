@@ -36,18 +36,19 @@ export default {
   created () {
     this.init()
   },
-  beforeUpdate () {
-    this.init()
-  },
   updated () {
-    console.log('111111111111')
     this.init()
   },
   watch: {
     type: {
       immediate: true,
-      handler() {
-        console.log('222222222222sdafas')
+      handler () {
+        this.init()
+      }
+    },
+    color: {
+      immediate: true,
+      handler () {
         this.init()
       }
     }
