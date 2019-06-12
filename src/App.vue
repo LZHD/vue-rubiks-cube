@@ -277,6 +277,11 @@ export default {
     rotateCubes (cubes, rotation) {
       const suffixes = ['X', 'Y', '']
       let str = ''
+      const cb = () => {
+        document.body.removeEventListener('transitionend', cb)
+        this.finalizeRotation(cubes, rotation)
+      }
+      document.body.addEventListener('transitionend', cb)
       for (let i = 0; i < 3; i++) {
         if (!rotation[i]) { continue }
         str = 'rotate' + suffixes[i] + '(' + (90 * rotation[i]) + 'deg)'
@@ -289,9 +294,6 @@ export default {
           }
         })
       })
-      setTimeout(() => {
-        this.finalizeRotation(cubes, rotation)
-      }, 5000)
     },
     finalizeRotation (cubes, rotation) {
       let direction = 0

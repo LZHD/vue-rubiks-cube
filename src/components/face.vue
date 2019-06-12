@@ -41,13 +41,13 @@ export default {
   },
   watch: {
     type: {
-      immediate: true,
+      // immediate: true,
       handler () {
         this.init()
       }
     },
     color: {
-      immediate: true,
+      // immediate: true,
       handler () {
         this.init()
       }

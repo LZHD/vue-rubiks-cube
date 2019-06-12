@@ -38,12 +38,13 @@ export default {
   },
   updated () {
     this.init()
+    console.log('dsfdasasd')
   },
-  watch: {
-    cube () {
-      this.init()
-    }
-  },
+  // watch: {
+  //   cube () {
+  //     this.init()
+  //   }
+  // },
   methods: {
     init () {
       let transform = ''
